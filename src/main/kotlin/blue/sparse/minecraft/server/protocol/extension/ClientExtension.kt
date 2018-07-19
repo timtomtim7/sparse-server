@@ -46,7 +46,7 @@ suspend fun Client.readString() = suspendCoroutine<String> { cont ->
 suspend fun Client.readVarIntString(): String {
 	val length = readVarInt()
 	val buffer = read(length)
-	val bytes = if(buffer.hasArray()) buffer.array() else run {
+	val bytes = if (buffer.hasArray()) buffer.array() else run {
 		val array = ByteArray(length)
 		buffer.get(array)
 		array
@@ -61,9 +61,9 @@ suspend fun Client.readVarInt(): Int {
 	var size = 0
 	var value = 0
 
-	while (true){
+	while (true) {
 		val byte = readByte().toInt()
-		if(byte == -1) throw EOFException()
+		if (byte == -1) throw EOFException()
 		value = value or ((byte and VARINT_PART) shl (size++ * 7))
 
 		if (size > 5)

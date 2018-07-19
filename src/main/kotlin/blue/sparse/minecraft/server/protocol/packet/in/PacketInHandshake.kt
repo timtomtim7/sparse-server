@@ -7,7 +7,7 @@ import simplenet.Client
 import java.nio.ByteBuffer
 
 data class PacketInHandshake(
-		var version: Int,
+		var protocol: Int,
 		var address: String,
 		var port: Short,
 		var state: State
@@ -16,7 +16,7 @@ data class PacketInHandshake(
 	constructor(): this(-1, "", -1, State.UNKNOWN)
 
 	override fun receive(client: Client, data: ByteBuffer) {
-		version = data.getVarInt()
+		protocol = data.getVarInt()
 		address = data.getVarIntString()
 		port = data.short
 		state = State.of(data.getVarInt())!!

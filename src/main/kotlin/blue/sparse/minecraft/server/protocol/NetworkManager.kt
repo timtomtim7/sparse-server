@@ -24,13 +24,15 @@ object NetworkManager {
 	}
 
 	private fun onDisconnect(client: Client) {
+		if (!connected.remove(client))
+			return
 		println("Client disconnected")
-		connected.remove(client)
 	}
 
 	private fun onConnect(client: Client) {
 		println("Client connected (${connected.size})")
 		connected.add(client)
+		client.onDisconnect { onDisconnect(client) }
 
 		client.launch {
 			while(this in connected) {
@@ -62,14 +64,16 @@ object NetworkManager {
 						gfx.dispose()
 
 						send(client, PacketOutStatus(
-								"1.13",
-								47,
+								"SparseServer",
+								packet.protocol,
 								100,
 								i,
 								"${Math.random()}",
 								icon
 						))
 
+						if(packet.protocol > 47)
+							break
 						Thread.sleep(50)
 					}
 				}
