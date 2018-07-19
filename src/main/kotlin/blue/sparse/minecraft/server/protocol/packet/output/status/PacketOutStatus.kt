@@ -1,7 +1,8 @@
-package blue.sparse.minecraft.server.protocol.packet.out
+package blue.sparse.minecraft.server.protocol.packet.output.status
 
 import blue.sparse.minecraft.server.extension.add
 import blue.sparse.minecraft.server.protocol.extension.putVarIntString
+import blue.sparse.minecraft.server.protocol.packet.ConnectionState
 import blue.sparse.minecraft.server.protocol.packet.Packet
 import com.google.gson.JsonObject
 import simplenet.Client
@@ -19,7 +20,7 @@ data class PacketOutStatus(
 	//TODO: Implement sample players
 		var description: String,
 		var icon: BufferedImage?
-): Packet.Out(0x00) {
+): Packet.Out(0x00, ConnectionState.STATUS) {
 
 	override fun serialize(client: Client, data: ByteBuffer) {
 		val json = JsonObject()
